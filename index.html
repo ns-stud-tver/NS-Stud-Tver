@@ -1,0 +1,2189 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>NS Studio — Студия красоты в Твери | Орджоникидзе, 44</title>
+  <meta name="description" content="Камерная студия красоты NS в Твери (ул. Орджоникидзе, 44). Маникюр от Дарины, ресницы и брови от Натальи, макияж и прически от Елизаветы. Запись через MAX." />
+  <meta name="theme-color" content="#FAF8F5" />
+
+  <!-- Google Fonts: Manrope & Cormorant Garamond -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            milk: '#FAF8F5',
+            sand: '#F1EDE6',
+            borderWarm: '#E5DFD5',
+            graphite: '#1C1B19',
+            muted: '#6E6A63',
+            sage: '#586653',
+            sageDark: '#455141',
+            terracotta: '#9E5A44'
+          },
+          fontFamily: {
+            sans: ['Manrope', 'sans-serif'],
+            serif: ['Cormorant Garamond', 'serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- React & ReactDOM (Production) + Babel -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <style>
+    * { -webkit-tap-highlight-color: transparent; }
+    body {
+      background-color: #FAF8F5;
+      color: #1C1B19;
+      font-family: 'Manrope', sans-serif;
+      overflow-x: hidden;
+    }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    @keyframes slideUp {
+      from { transform: translateY(100%); opacity: 0.5; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-sheet { animation: slideUp 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .animate-fade { animation: fadeIn 0.25s ease-out forwards; }
+  </style>
+</head>
+<body class="bg-milk text-graphite antialiased selection:bg-sage selection:text-white">
+  <div id="root"></div>
+
+  <!-- ВСТРОЕННЫЕ АВТОНОМНЫЕ ИЛЛЮСТРАЦИИ И ДАННЫЕ САЛОНА -->
+  <script id="ns-initial-data">
+    const makeSvgUrl = (svgStr) => "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svgStr.trim());
+
+    const ART_NAILS_DARINA = makeSvgUrl(`
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="100%" height="100%">
+        <defs>
+          <linearGradient id="bg1" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#F6F2EC"/>
+            <stop offset="50%" stop-color="#EAE3D7"/>
+            <stop offset="100%" stop-color="#DDD3C4"/>
+          </linearGradient>
+          <linearGradient id="silk1" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#9E5A44" stop-opacity="0.18"/>
+            <stop offset="100%" stop-color="#586653" stop-opacity="0.08"/>
+          </linearGradient>
+        </defs>
+        <rect width="800" height="800" fill="url(#bg1)"/>
+        <circle cx="620" cy="180" r="260" fill="url(#silk1)"/>
+        <path d="M 180 800 L 180 340 A 220 220 0 0 1 620 340 L 620 800 Z" fill="#FAF8F5" opacity="0.85"/>
+        <path d="M 210 800 L 210 350 A 190 190 0 0 1 590 350 L 590 800 Z" fill="none" stroke="#D5CBBF" stroke-width="1.5"/>
+        <g transform="translate(250, 210)">
+          <path d="M 85 450 C 85 350, 65 250, 75 140 C 78 105, 108 105, 112 140 C 116 200, 118 250, 122 275" fill="#EFEAE2" stroke="#1C1B19" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M 122 275 C 122 180, 125 85, 132 55 C 138 22, 168 22, 174 55 C 180 110, 180 210, 182 270" fill="#EFEAE2" stroke="#1C1B19" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M 182 270 C 185 180, 192 95, 198 70 C 204 40, 232 42, 236 72 C 240 125, 236 215, 234 290" fill="#EFEAE2" stroke="#1C1B19" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M 234 290 C 242 215, 252 150, 258 130 C 264 106, 288 110, 290 135 C 292 185, 280 295, 260 450" fill="#EFEAE2" stroke="#1C1B19" stroke-width="2.5" stroke-linecap="round"/>
+          <ellipse cx="94" cy="120" rx="11" ry="22" fill="#9E5A44"/>
+          <ellipse cx="153" cy="36" rx="12" ry="25" fill="#9E5A44"/>
+          <ellipse cx="217" cy="54" rx="12" ry="24" fill="#9E5A44"/>
+          <ellipse cx="275" cy="116" rx="10" ry="20" fill="#9E5A44"/>
+          <path d="M 124 215 Q 153 224 180 215" stroke="#C5A059" stroke-width="4" fill="none" stroke-linecap="round"/>
+        </g>
+        <text x="400" y="105" text-anchor="middle" font-family="Georgia, serif" font-size="18" letter-spacing="6" fill="#6E6A63">NS STUDIO • TVER</text>
+        <text x="400" y="145" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-size="34" fill="#1C1B19">Aesthetic Nail Care</text>
+      </svg>
+    `);
+
+    const ART_STUDIO_ATMOSPHERE = makeSvgUrl(`
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="100%" height="100%">
+        <defs>
+          <linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#FAF8F5"/>
+            <stop offset="100%" stop-color="#E6DFD3"/>
+          </linearGradient>
+        </defs>
+        <rect width="800" height="800" fill="url(#bg2)"/>
+        <polygon points="0,120 800,320 800,520 0,280" fill="#FFFFFF" opacity="0.45"/>
+        <rect x="150" y="130" width="340" height="520" rx="170" fill="#EFECE6" stroke="#D6CFC2" stroke-width="3"/>
+        <rect x="175" y="155" width="290" height="470" rx="145" fill="#F9F6F0" stroke="#E5DFD5" stroke-width="1.5"/>
+        <path d="M 480 660 L 460 500 C 455 445, 510 430, 515 390 L 555 390 C 560 430, 615 445, 610 500 L 590 660 Z" fill="#9E5A44" opacity="0.9"/>
+        <text x="320" y="340" text-anchor="middle" font-family="Georgia, serif" font-size="56" fill="#1C1B19" opacity="0.85">NS</text>
+        <text x="320" y="380" text-anchor="middle" font-family="sans-serif" font-size="14" letter-spacing="5" fill="#6E6A63">ОРДЖОНИКИДЗЕ, 44</text>
+      </svg>
+    `);
+
+    const ART_MAKEUP_ELIZAVETA = makeSvgUrl(`
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="100%" height="100%">
+        <defs>
+          <linearGradient id="bgMakeup" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#F9F5F0"/>
+            <stop offset="100%" stop-color="#E5D9CC"/>
+          </linearGradient>
+        </defs>
+        <rect width="800" height="800" fill="url(#bgMakeup)"/>
+        <circle cx="400" cy="400" r="260" fill="#F2EBE1" stroke="#D6C7B8" stroke-width="2"/>
+        <path d="M 260 420 Q 400 480 540 420" fill="none" stroke="#9E5A44" stroke-width="4" stroke-linecap="round"/>
+        <path d="M 280 330 Q 400 270 520 330" fill="none" stroke="#1C1B19" stroke-width="3.5" stroke-linecap="round"/>
+        <circle cx="340" cy="380" r="16" fill="#D4A373" opacity="0.4"/>
+        <circle cx="460" cy="380" r="16" fill="#D4A373" opacity="0.4"/>
+        <text x="400" y="130" text-anchor="middle" font-family="sans-serif" font-size="15" letter-spacing="6" fill="#9E5A44" font-weight="bold">MAKEUP &amp; HAIR STYLING</text>
+        <text x="400" y="665" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-size="36" fill="#1C1B19">Bridal &amp; Evening Glam</text>
+        <text x="400" y="705" text-anchor="middle" font-family="sans-serif" font-size="15" letter-spacing="4" fill="#6E6A63">МАСТЕР ЕЛИЗАВЕТА • МАКИЯЖ И ПРИЧЕСКИ</text>
+      </svg>
+    `);
+
+    const ART_LASHES_NATALIA = makeSvgUrl(`
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="100%" height="100%">
+        <defs>
+          <linearGradient id="bg4" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#FAF8F5"/>
+            <stop offset="100%" stop-color="#EAE3D8"/>
+          </linearGradient>
+        </defs>
+        <rect width="800" height="800" fill="url(#bg4)"/>
+        <circle cx="400" cy="400" r="270" fill="#F4F0E8" stroke="#E2DACB" stroke-width="2"/>
+        <path d="M 210 340 Q 380 250 590 320 Q 430 285 215 355 Z" fill="#1C1B19" opacity="0.85"/>
+        <path d="M 230 440 Q 390 505 560 430" fill="none" stroke="#1C1B19" stroke-width="5" stroke-linecap="round"/>
+        <text x="400" y="120" text-anchor="middle" font-family="sans-serif" font-size="15" letter-spacing="6" fill="#9E5A44" font-weight="bold">LASH &amp; BROW ARCHITECTURE</text>
+        <text x="400" y="665" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-size="36" fill="#1C1B19">Expressive Look</text>
+        <text x="400" y="705" text-anchor="middle" font-family="sans-serif" font-size="15" letter-spacing="4" fill="#6E6A63">МАСТЕР НАТАЛЬЯ • 1D–3D &amp; LAMINATION</text>
+      </svg>
+    `);
+
+    window.__NS_FALLBACK_IMG__ = ART_STUDIO_ATMOSPHERE;
+
+    window.__NS_DEFAULT_DATA__ = {
+      settings: {
+        salonName: "NS Studio",
+        city: "г. Тверь",
+        address: "ул. Орджоникидзе, 44",
+        district: "Московский район",
+        hoursText: "Ежедневно, 10:00 – 21:00",
+        openHour: 10,
+        closeHour: 21,
+        rating: "4.8",
+        reviewsCount: "45+ оценок в Яндекс.Картах",
+        heroSubtitle: "Камерное пространство красоты без суеты. Персональная запись к проверенным мастерам студии: маникюр от Дарины, ресницы и брови от Натальи, макияж и прически от Елизаветы.",
+        yandexMapsUrl: "https://yandex.ru/maps/?text=Тверь,+улица+Орджоникидзе,+44",
+        dgisUrl: "https://2gis.ru/tver/search/Тверь,%20Орджоникидзе,%2044"
+      },
+      masters: {
+        darina: {
+          id: "darina",
+          name: "Дарина",
+          specialty: "Мастер по маникюру",
+          phoneDisplay: "+7 (904) 352-95-79",
+          phoneRaw: "+79043529579",
+          maxInviteLink: "https://max.ru",
+          maxWebhookUrl: ""
+        },
+        natalia: {
+          id: "natalia",
+          name: "Наталья",
+          specialty: "Мастер по ресницам и бровям",
+          phoneDisplay: "+7 (900) 117-78-94",
+          phoneRaw: "+79001177894",
+          maxInviteLink: "https://max.ru",
+          maxWebhookUrl: ""
+        },
+        elizaveta: {
+          id: "elizaveta",
+          name: "Елизавета",
+          specialty: "Визажист и стилист по прическам",
+          phoneDisplay: "+7 (920) 685-50-05",
+          phoneRaw: "+79206855005",
+          maxInviteLink: "https://max.ru",
+          maxWebhookUrl: ""
+        }
+      },
+      blocks: {
+        showPromoBanner: true,
+        promoBadge: "Привилегия",
+        promoText: "Знакомство со студией: скидка 10% на первый визит при записи через сайт",
+        showHotSlots: true,
+        showGallery: true,
+        showReviews: true
+      },
+      hotSlots: [
+        { id: "s1", masterId: "darina", day: "Сегодня", time: "14:30", label: "Маникюр (Дарина)" },
+        { id: "s2", masterId: "natalia", day: "Сегодня", time: "17:00", label: "Ресницы / Брови (Наталья)" },
+        { id: "s3", masterId: "elizaveta", day: "Сегодня", time: "18:30", label: "Вечерний макияж (Елизавета)" },
+        { id: "s4", masterId: "darina", day: "Завтра", time: "11:00", label: "Маникюр с покрытием (Дарина)" },
+        { id: "s5", masterId: "natalia", day: "Завтра", time: "14:30", label: "КОМБО ламинирование (Наталья)" },
+        { id: "s6", masterId: "elizaveta", day: "Завтра", time: "16:00", label: "Укладка / локоны (Елизавета)" }
+      ],
+      categories: [
+        { id: "nails", name: "Маникюр • Дарина", masterId: "darina" },
+        { id: "brows_lashes", name: "Ресницы и Брови • Наталья", masterId: "natalia" },
+        { id: "makeup_hair", name: "Макияж и Прически • Елизавета", masterId: "elizaveta" }
+      ],
+      services: [
+        /* МАНИКЮР — ДАРИНА */
+        { id: "m1", category: "nails", masterId: "darina", title: "Гигиенический маникюр", desc: "Деликатная атравматичная обработка кутикулы и придание формы", price: 700, duration: 40, popular: false },
+        { id: "m2", category: "nails", masterId: "darina", title: "Маникюр с покрытием гель-лак", desc: "Комбинированная обработка, выравнивание ногтевой пластины и стойкое покрытие под кутикулу", price: 1500, duration: 90, popular: true },
+        { id: "m3", category: "nails", masterId: "darina", title: "Маникюр с укреплением гелем и покрытием гель-лак", desc: "Моделирование архитектуры твердым гелем для тонкого и сверхпрочного торца", price: 1700, duration: 105, popular: true },
+        { id: "m4", category: "nails", masterId: "darina", title: "Сложный дизайн", desc: "Художественная роспись, инкрустация, объемные текстуры и графика", price: 300, duration: 20, popular: false },
+        { id: "m5", category: "nails", masterId: "darina", title: "Французский маникюр, градиент", desc: "Элегантный френч с идеальной линией улыбки или мягкая растяжка цвета", price: 300, duration: 20, popular: false },
+
+        /* РЕСНИЦЫ И БРОВИ — НАТАЛЬЯ */
+        { id: "b1", category: "brows_lashes", masterId: "natalia", title: "Ламинирование ресниц", desc: "Придание натурального изгиба, стойкое окрашивание и уплотнение ресниц", price: 1700, duration: 60, popular: true },
+        { id: "b2", category: "brows_lashes", masterId: "natalia", title: "Ботокс ресниц", desc: "Глубокое питание кератином, заполнение поврежденных чешуек и глянцевый блеск", price: 1900, duration: 60, popular: false },
+        { id: "b3", category: "brows_lashes", masterId: "natalia", title: "Ламинирование бровей", desc: "Укладка и дисциплинирование жестких или непослушных волосков", price: 1200, duration: 50, popular: false },
+        { id: "b4", category: "brows_lashes", masterId: "natalia", title: "Ботокс бровей", desc: "Комплексное восстановление структуры бровей после частых укладок", price: 1400, duration: 50, popular: false },
+        { id: "b5", category: "brows_lashes", masterId: "natalia", title: "КОМБО ламинирование ресниц + бровей", desc: "Полное преображение взгляда за один визит по специальной цене", price: 2600, duration: 90, popular: true },
+        { id: "b6", category: "brows_lashes", masterId: "natalia", title: "Оформление бровей", desc: "Построение гармоничной формы пинцетом и деликатным воском", price: 400, duration: 30, popular: false },
+        { id: "b7", category: "brows_lashes", masterId: "natalia", title: "КОМБО оформление и окрашивание бровей", desc: "Архитектура формы + стойкое насыщенное окрашивание краской или хной", price: 700, duration: 45, popular: true },
+        { id: "b8", category: "brows_lashes", masterId: "natalia", title: "Наращивание ресниц 1D (Классика)", desc: "Натуральный аккуратный объем, 1 искусственная ресница на 1 родную", price: 1700, duration: 100, popular: false },
+        { id: "b9", category: "brows_lashes", masterId: "natalia", title: "Наращивание ресниц 1.5D", desc: "Мягкий полуторный объем без перегруза взгляда", price: 1900, duration: 110, popular: false },
+        { id: "b10", category: "brows_lashes", masterId: "natalia", title: "Наращивание ресниц 2D", desc: "Идеальный пушистый объем и бархатная линия ресничного края", price: 2100, duration: 120, popular: true },
+        { id: "b11", category: "brows_lashes", masterId: "natalia", title: "Наращивание ресниц 2.5D", desc: "Плотный выразительный объем для яркого акцента на глаза", price: 2300, duration: 130, popular: false },
+        { id: "b12", category: "brows_lashes", masterId: "natalia", title: "Наращивание ресниц 3D", desc: "Пышный голливудский объем с проработкой всех ресниц", price: 2500, duration: 140, popular: false },
+        { id: "b13", category: "brows_lashes", masterId: "natalia", title: "Наращивание ресниц (Экспресс / Базовое)", desc: "Легкое частичное наращивание или уголки глаз", price: 1200, duration: 75, popular: false },
+        { id: "b14", category: "brows_lashes", masterId: "natalia", title: "Изгиб L, M", desc: "Трендовые геометричные изгибы для лифтинг-эффекта взгляда", price: 200, duration: 15, popular: false },
+        { id: "b15", category: "brows_lashes", masterId: "natalia", title: "Цветные ресницы", desc: "Трендовые цветные лучи или вставки в подарок при наращивании", price: 0, duration: 10, popular: true },
+        { id: "b16", category: "brows_lashes", masterId: "natalia", title: "Снятие чужой работы", desc: "Бережное растворение ремувером без повреждения своих ресниц", price: 300, duration: 20, popular: false },
+
+        /* МАКИЯЖ И ПРИЧЕСКИ — ЕЛИЗАВЕТА */
+        { id: "e1", category: "makeup_hair", masterId: "elizaveta", title: "Свадебный макияж", desc: "Стойкий профессиональный макияж с учетом особенностей на весь день", price: 2000, duration: 90, popular: true },
+        { id: "e2", category: "makeup_hair", masterId: "elizaveta", title: "Вечерний макияж", desc: "Выразительный образ для торжества, фотосессии или особого вечера", price: 2000, duration: 75, popular: true },
+        { id: "e3", category: "makeup_hair", masterId: "elizaveta", title: "Дневной макияж", desc: "Легкий нюдовый макияж (макияж без макияжа) для свежего вида", price: 1500, duration: 50, popular: false },
+        { id: "e4", category: "makeup_hair", masterId: "elizaveta", title: "Укладка / локоны", desc: "Объемные локоны, голливудская волна или текстурная укладка", price: 1200, duration: 60, popular: true },
+        { id: "e5", category: "makeup_hair", masterId: "elizaveta", title: "Собранная причёска", desc: "Элегантный низкий/высокий пучок, хвост или сложная вечерняя прическа", price: 1500, duration: 75, popular: false },
+        { id: "e6", category: "makeup_hair", masterId: "elizaveta", title: "Косы", desc: "Аккуратные стильные плетения и косы с канекалоном или без", price: 1000, duration: 45, popular: false }
+      ],
+      gallery: [
+        { id: "g1", url: ART_NAILS_DARINA, tag: "Маникюр от Дарины" },
+        { id: "g2", url: ART_MAKEUP_ELIZAVETA, tag: "Макияж от Елизаветы" },
+        { id: "g3", url: ART_LASHES_NATALIA, tag: "Ресницы от Натальи" },
+        { id: "g4", url: ART_STUDIO_ATMOSPHERE, tag: "Атмосфера студии NS" }
+      ],
+      reviews: [
+        { id: "r1", author: "Екатерина М.", date: "Яндекс.Карты • 5.0", text: "Была на маникюре у Дарины — покрытие относилось ровно 4 недели без единой отслойки! Кутикула обработана очень аккуратно, чай и атмосфера в студии на высоте." },
+        { id: "r2", author: "Алина В.", date: "Яндекс.Карты • 5.0", text: "Наталья — настоящий мастер своего дела! Делали КОМБО ламинирование ресниц и бровей. Брови аккуратные, натуральные, реснички идеально закручены. Спасибо!" },
+        { id: "r3", author: "Кристина С.", date: "Яндекс.Карты • 5.0", text: "Елизавета собирала меня на вечернее мероприятие (макияж + локоны). Образ продержался всю ночь и выглядел потрясающе! Очень талантливый мастер." }
+      ]
+    };
+  </script>
+
+  <script type="text/babel">
+    const { useState, useEffect, useMemo } = React;
+
+    const STORAGE_KEY = "ns_salon_tver_state_v6";
+    const ORDERS_KEY = "ns_salon_tver_orders_v3";
+    const ADMIN_PIN = "1234";
+
+    const Icon = ({ name, className = "w-5 h-5" }) => {
+      const icons = {
+        check: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />,
+        plus: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M12 5v14M5 12h14" />,
+        close: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M6 18L18 6M6 6l12 12" />,
+        clock: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.6" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />,
+        pin: <><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.6" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.6" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></>,
+        phone: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.6" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />,
+        shield: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.6" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />,
+        sparkles: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.6" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />,
+        star: <path fill="currentColor" d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />,
+        lock: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.6" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />,
+        copy: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.6" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />,
+        trash: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.6" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />,
+        send: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M14 5l7 7m0 0l-7 7m7-7H3" />,
+        download: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />,
+        upload: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />,
+        user: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.6" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+      };
+      return (
+        <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          {icons[name]}
+        </svg>
+      );
+    };
+
+    // Функция сжатия загружаемого фото (чтобы фото с телефона весило ~60 КБ и мгновенно сохранялось)
+    const compressImageFile = (file, maxWidth = 800, quality = 0.78) => {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.createElement("canvas");
+            let width = img.width;
+            let height = img.height;
+            if (width > height) {
+              if (width > maxWidth) {
+                height = Math.round((height * maxWidth) / width);
+                width = maxWidth;
+              }
+            } else {
+              if (height > maxWidth) {
+                width = Math.round((width * maxWidth) / height);
+                height = maxWidth;
+              }
+            }
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0, width, height);
+            resolve(canvas.toDataURL("image/jpeg", quality));
+          };
+          img.onerror = reject;
+          img.src = event.target.result;
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    };
+
+    function App() {
+      const [data, setData] = useState(() => {
+        try {
+          const saved = localStorage.getItem(STORAGE_KEY);
+          if (saved) return JSON.parse(saved);
+        } catch (e) {}
+        return window.__NS_DEFAULT_DATA__;
+      });
+
+      const [orders, setOrders] = useState(() => {
+        try {
+          const saved = localStorage.getItem(ORDERS_KEY);
+          if (saved) return JSON.parse(saved);
+        } catch (e) {}
+        return [];
+      });
+
+      useEffect(() => {
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch (e) {}
+      }, [data]);
+
+      useEffect(() => {
+        try { localStorage.setItem(ORDERS_KEY, JSON.stringify(orders)); } catch (e) {}
+      }, [orders]);
+
+      // Клиентские состояния
+      const [activeCategory, setActiveCategory] = useState("nails");
+      const [selectedIds, setSelectedIds] = useState([]);
+      const [selectedSlot, setSelectedSlot] = useState(null);
+      const [bookingMasterId, setBookingMasterId] = useState("darina");
+      const [customTime, setCustomTime] = useState("");
+      const [clientName, setClientName] = useState("");
+      const [clientPhone, setClientPhone] = useState("");
+      const [clientComment, setClientComment] = useState("");
+      const [isBookingOpen, setIsBookingOpen] = useState(false);
+      const [bookingStep, setBookingStep] = useState("form");
+      const [lastFormattedMsg, setLastFormattedMsg] = useState("");
+      const [lastTargetMaster, setLastTargetMaster] = useState(null);
+      const [promoDismissed, setPromoDismissed] = useState(false);
+      const [toastMsg, setToastMsg] = useState("");
+
+      // Админка
+      const [logoTapCount, setLogoTapCount] = useState(0);
+      const [isPinModalOpen, setIsPinModalOpen] = useState(false);
+      const [pinInput, setPinInput] = useState("");
+      const [pinError, setPinError] = useState(false);
+      const [isAdminOpen, setIsAdminOpen] = useState(false);
+      const [adminTab, setAdminTab] = useState("slots");
+
+      // Поля для добавления окошка в админке (без застрявшего текста "Маникюр (Дарина)")
+      const [newSlotMaster, setNewSlotMaster] = useState("darina");
+      const [newSlotDay, setNewSlotDay] = useState("Сегодня");
+      const [newSlotTime, setNewSlotTime] = useState("16:00");
+      const [newSlotLabel, setNewSlotLabel] = useState("");
+
+      // Поля для добавления новой фотографии в галерею
+      const [newGalleryTag, setNewGalleryTag] = useState("Работа мастера");
+
+      const [newService, setNewService] = useState({
+        category: "nails",
+        masterId: "darina",
+        title: "",
+        desc: "",
+        price: 1500,
+        duration: 60,
+        popular: false
+      });
+
+      const showToast = (msg) => {
+        setToastMsg(msg);
+        setTimeout(() => setToastMsg(""), 3200);
+      };
+
+      const isOpenNow = useMemo(() => {
+        try {
+          const now = new Date();
+          const tverTime = new Date(now.toLocaleString("en-US", { timeZone: "Europe/Moscow" }));
+          const hour = tverTime.getHours();
+          return hour >= data.settings.openHour && hour < data.settings.closeHour;
+        } catch (e) {
+          return true;
+        }
+      }, [data.settings]);
+
+      const selectedServices = useMemo(() => {
+        return data.services.filter((s) => selectedIds.includes(s.id));
+      }, [data.services, selectedIds]);
+
+      const totalPrice = useMemo(() => {
+        return selectedServices.reduce((sum, s) => sum + Number(s.price || 0), 0);
+      }, [selectedServices]);
+
+      const totalDuration = useMemo(() => {
+        return selectedServices.reduce((sum, s) => sum + Number(s.duration || 0), 0);
+      }, [selectedServices]);
+
+      // Определение мастера на основе выбранных услуг или окошка
+      const effectiveMasterId = useMemo(() => {
+        if (selectedServices.length > 0) {
+          const firstSelected = selectedServices[0];
+          if (firstSelected && firstSelected.masterId) {
+            return firstSelected.masterId;
+          }
+        }
+        if (selectedSlot && selectedSlot.masterId) {
+          return selectedSlot.masterId;
+        }
+        return bookingMasterId;
+      }, [selectedServices, selectedSlot, bookingMasterId]);
+
+      const currentMaster = useMemo(() => {
+        return data.masters[effectiveMasterId] || data.masters.darina;
+      }, [data.masters, effectiveMasterId]);
+
+      const toggleService = (id) => {
+        const srv = data.services.find(s => s.id === id);
+        if (srv) {
+          setBookingMasterId(srv.masterId);
+        }
+        setSelectedIds((prev) =>
+          prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+        );
+      };
+
+      const handleSlotQuickPick = (slot) => {
+        setSelectedSlot(slot);
+        setBookingMasterId(slot.masterId);
+        setBookingStep("form");
+        setIsBookingOpen(true);
+      };
+
+      const handleLogoTap = () => {
+        setLogoTapCount((prev) => {
+          const next = prev + 1;
+          if (next >= 3) {
+            setIsPinModalOpen(true);
+            return 0;
+          }
+          setTimeout(() => setLogoTapCount(0), 1200);
+          return next;
+        });
+      };
+
+      const handlePinSubmit = (e) => {
+        e.preventDefault();
+        if (pinInput === ADMIN_PIN) {
+          setIsPinModalOpen(false);
+          setPinInput("");
+          setPinError(false);
+          setIsAdminOpen(true);
+        } else {
+          setPinError(true);
+          setPinInput("");
+        }
+      };
+
+      // Загрузка фото с телефона/компьютера для замены существующей карточки
+      const handleReplaceGalleryPhoto = async (galleryId, file) => {
+        if (!file) return;
+        try {
+          const compressedDataUrl = await compressImageFile(file);
+          setData((prev) => ({
+            ...prev,
+            gallery: prev.gallery.map((g) =>
+              g.id === galleryId ? { ...g, url: compressedDataUrl } : g
+            )
+          }));
+          showToast("Фото работы успешно загружено!");
+        } catch (err) {
+          showToast("Не удалось обработать фото");
+        }
+      };
+
+      // Добавление новой карточки с фото с телефона/компьютера
+      const handleAddNewGalleryPhoto = async (file) => {
+        if (!file) return;
+        try {
+          const compressedDataUrl = await compressImageFile(file);
+          setData((prev) => ({
+            ...prev,
+            gallery: [
+              ...prev.gallery,
+              {
+                id: "g_" + Date.now(),
+                tag: newGalleryTag.trim() || "Работа мастера",
+                url: compressedDataUrl
+              }
+            ]
+          }));
+          showToast("Новое фото добавлено в галерею!");
+        } catch (err) {
+          showToast("Не удалось загрузить фото");
+        }
+      };
+
+      const handleBookingSubmit = async (e) => {
+        e.preventDefault();
+        if (!clientName.trim() || !clientPhone.trim()) return;
+
+        const masterObj = currentMaster;
+        setLastTargetMaster(masterObj);
+
+        const servicesListText =
+          selectedServices.length > 0
+            ? selectedServices.map((s) => `• ${s.title} (${s.price} ₽)`).join("\n")
+            : `• Запись на ${masterObj.specialty.toLowerCase()}`;
+
+        const timeChoice = selectedSlot
+          ? `${selectedSlot.day}, ${selectedSlot.time}`
+          : customTime || "Ближайшее свободное время";
+
+        const messageText = [
+          `✨ Новая запись — ${data.settings.salonName}`,
+          `👩‍🎨 Мастер: ${masterObj.name} (${masterObj.specialty})`,
+          `👤 Клиент: ${clientName.trim()} (${clientPhone.trim()})`,
+          `💅 Услуги:\n${servicesListText}`,
+          selectedServices.length > 0
+            ? `💰 Ориентир стоимости: ${totalPrice.toLocaleString("ru-RU")} ₽ (~${totalDuration} мин)`
+            : null,
+          `🕒 Желаемое время: ${timeChoice}`,
+          clientComment.trim() ? `💬 Пожелания: ${clientComment.trim()}` : null
+        ]
+          .filter(Boolean)
+          .join("\n");
+
+        setLastFormattedMsg(messageText);
+
+        const newOrder = {
+          id: "ord_" + Date.now(),
+          createdAt: new Date().toLocaleString("ru-RU", {
+            day: "2-digit",
+            month: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit"
+          }),
+          masterName: masterObj.name,
+          clientName: clientName.trim(),
+          clientPhone: clientPhone.trim(),
+          services: selectedServices.map((s) => s.title),
+          totalPrice,
+          timeChoice,
+          comment: clientComment.trim(),
+          status: "Новая"
+        };
+        setOrders((prev) => [newOrder, ...prev]);
+
+        try {
+          await navigator.clipboard.writeText(messageText);
+        } catch (err) {}
+
+        if (masterObj.maxWebhookUrl && masterObj.maxWebhookUrl.trim() !== "") {
+          try {
+            fetch(masterObj.maxWebhookUrl.trim(), {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                text: messageText,
+                phone: masterObj.phoneRaw,
+                order: newOrder
+              })
+            }).catch(() => {});
+          } catch (err) {}
+        }
+
+        setBookingStep("success");
+      };
+
+      const openMaxMessenger = () => {
+        try {
+          navigator.clipboard.writeText(lastFormattedMsg);
+        } catch (e) {}
+        const masterObj = lastTargetMaster || currentMaster;
+        const targetUrl =
+          masterObj.maxInviteLink && masterObj.maxInviteLink.trim() !== ""
+            ? masterObj.maxInviteLink.trim()
+            : "https://max.ru";
+        window.open(targetUrl, "_blank", "noopener,noreferrer");
+      };
+
+      const exportUpdatedHtmlFile = () => {
+        try {
+          const docClone = document.documentElement.cloneNode(true);
+          const rootDiv = docClone.querySelector("#root");
+          if (rootDiv) rootDiv.innerHTML = "";
+          const dataScript = docClone.querySelector("#ns-initial-data");
+          if (dataScript) {
+            dataScript.textContent = `\n    window.__NS_FALLBACK_IMG__ = ${JSON.stringify(window.__NS_FALLBACK_IMG__)};\n    window.__NS_DEFAULT_DATA__ = ${JSON.stringify(data, null, 2)};\n  `;
+          }
+          const finalHtml = "<!DOCTYPE html>\n" + docClone.outerHTML;
+          const blob = new Blob([finalHtml], { type: "text/html;charset=utf-8" });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "index.html";
+          a.click();
+          URL.revokeObjectURL(url);
+          showToast("Готовый файл index.html скачан!");
+        } catch (err) {
+          showToast("Ошибка при экспорте файла");
+        }
+      };
+
+      return (
+        <div className="min-h-screen flex flex-col pb-28">
+          {/* TOAST УВЕДОМЛЕНИЕ */}
+          {toastMsg && (
+            <div className="fixed top-4 left-1/2 -translate-x-1/2 z-[100] bg-graphite text-milk text-xs font-medium px-4 py-2.5 rounded-full shadow-lg animate-fade">
+              {toastMsg}
+            </div>
+          )}
+
+          {/* АКЦИОННАЯ ПЛАШКА */}
+          {data.blocks.showPromoBanner && !promoDismissed && (
+            <div className="bg-graphite text-milk px-4 py-2.5 text-xs">
+              <div className="max-w-2xl mx-auto flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2 leading-snug">
+                  <span className="bg-sage text-white px-2 py-0.5 rounded text-[10px] uppercase tracking-wider font-semibold shrink-0">
+                    {data.blocks.promoBadge}
+                  </span>
+                  <span className="text-milk/90">{data.blocks.promoText}</span>
+                </div>
+                <button
+                  onClick={() => setPromoDismissed(true)}
+                  className="text-milk/60 hover:text-milk p-1 shrink-0"
+                  aria-label="Закрыть баннер"
+                >
+                  <Icon name="close" className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* ШАПКА */}
+          <header className="sticky top-0 z-30 bg-milk/90 backdrop-blur-md border-b border-borderWarm">
+            <div className="max-w-2xl mx-auto px-4 h-16 flex items-center justify-between">
+              <div
+                onClick={handleLogoTap}
+                className="flex items-center gap-3 cursor-pointer select-none"
+                title="NS Studio — нажмите 3 раза для входа в панель"
+              >
+                <div className="w-10 h-10 rounded-full bg-graphite text-milk flex items-center justify-center font-serif text-xl tracking-wider font-semibold">
+                  NS
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="font-semibold text-sm tracking-tight text-graphite">
+                      {data.settings.salonName}
+                    </span>
+                    <span className="inline-flex items-center gap-1 text-[11px] text-muted bg-sand px-2 py-0.5 rounded-full">
+                      <Icon name="star" className="w-3 h-3 text-terracotta" />
+                      {data.settings.rating}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-1.5 text-[11px] text-muted">
+                    <span
+                      className={`w-1.5 h-1.5 rounded-full ${
+                        isOpenNow ? "bg-emerald-600" : "bg-amber-500"
+                      }`}
+                    />
+                    <span>
+                      {isOpenNow ? "Сейчас открыто • до 21:00" : data.settings.hoursText}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <a
+                  href="#location"
+                  className="text-xs font-medium text-graphite bg-sand hover:bg-borderWarm/70 px-3 py-2 rounded-full transition flex items-center gap-1.5"
+                >
+                  <Icon name="pin" className="w-3.5 h-3.5 text-terracotta" />
+                  <span className="hidden xs:inline">Орджоникидзе, 44</span>
+                  <span className="xs:hidden">Адрес</span>
+                </a>
+                <a
+                  href={`tel:${data.masters.darina.phoneRaw}`}
+                  className="w-9 h-9 rounded-full bg-sand hover:bg-borderWarm/70 flex items-center justify-center text-graphite transition"
+                  title="Позвонить в студию"
+                >
+                  <Icon name="phone" className="w-4 h-4" />
+                </a>
+              </div>
+            </div>
+          </header>
+
+          {/* КОНТЕНТ */}
+          <main className="max-w-2xl mx-auto w-full px-4 pt-6 space-y-10 flex-1">
+            {/* HERO */}
+            <section className="space-y-5">
+              <div className="inline-flex items-center gap-2 text-xs text-muted bg-sand/80 border border-borderWarm px-3 py-1 rounded-full">
+                <span>{data.settings.city}, {data.settings.address}</span>
+                <span>•</span>
+                <span>{data.settings.district}</span>
+              </div>
+
+              <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight leading-[1.15] text-graphite">
+                Маникюр, ресницы и макияж <br />
+                <span className="font-serif italic font-normal text-4xl sm:text-5xl text-sage">
+                  с безупречной эстетикой
+                </span>
+              </h1>
+
+              <p className="text-sm sm:text-base text-muted leading-relaxed">
+                {data.settings.heroSubtitle}
+              </p>
+
+              {/* Карточки трех мастеров */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+                <div
+                  onClick={() => {
+                    setActiveCategory("nails");
+                    setBookingMasterId("darina");
+                  }}
+                  className="bg-white border border-borderWarm rounded-2xl p-4 flex flex-col justify-between cursor-pointer hover:border-graphite/40 transition shadow-xs"
+                >
+                  <div className="space-y-0.5">
+                    <span className="text-[10px] uppercase tracking-wider font-semibold text-sage">Маникюр</span>
+                    <h3 className="text-base font-bold text-graphite">Дарина</h3>
+                    <p className="text-xs text-muted">{data.masters.darina.phoneDisplay}</p>
+                  </div>
+                  <span className="text-xs bg-sand text-graphite font-semibold px-3 py-1.5 rounded-full text-center mt-3">
+                    Прайс →
+                  </span>
+                </div>
+
+                <div
+                  onClick={() => {
+                    setActiveCategory("brows_lashes");
+                    setBookingMasterId("natalia");
+                  }}
+                  className="bg-white border border-borderWarm rounded-2xl p-4 flex flex-col justify-between cursor-pointer hover:border-graphite/40 transition shadow-xs"
+                >
+                  <div className="space-y-0.5">
+                    <span className="text-[10px] uppercase tracking-wider font-semibold text-terracotta">Ресницы и Брови</span>
+                    <h3 className="text-base font-bold text-graphite">Наталья</h3>
+                    <p className="text-xs text-muted">{data.masters.natalia.phoneDisplay}</p>
+                  </div>
+                  <span className="text-xs bg-sand text-graphite font-semibold px-3 py-1.5 rounded-full text-center mt-3">
+                    Прайс →
+                  </span>
+                </div>
+
+                <div
+                  onClick={() => {
+                    setActiveCategory("makeup_hair");
+                    setBookingMasterId("elizaveta");
+                  }}
+                  className="bg-white border border-borderWarm rounded-2xl p-4 flex flex-col justify-between cursor-pointer hover:border-graphite/40 transition shadow-xs"
+                >
+                  <div className="space-y-0.5">
+                    <span className="text-[10px] uppercase tracking-wider font-semibold text-sage">Визаж и Прически</span>
+                    <h3 className="text-base font-bold text-graphite">Елизавета</h3>
+                    <p className="text-xs text-muted">{data.masters.elizaveta.phoneDisplay}</p>
+                  </div>
+                  <span className="text-xs bg-sand text-graphite font-semibold px-3 py-1.5 rounded-full text-center mt-3">
+                    Прайс →
+                  </span>
+                </div>
+              </div>
+
+              {/* Главный баннер */}
+              <div className="relative rounded-2xl overflow-hidden border border-borderWarm bg-sand aspect-[16/10] sm:aspect-[16/9]">
+                <img
+                  src={data.gallery[3]?.url || data.gallery[0]?.url || window.__NS_FALLBACK_IMG__}
+                  alt="Студия красоты NS Тверь"
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = window.__NS_FALLBACK_IMG__;
+                  }}
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/20 to-transparent flex flex-col justify-end p-4 sm:p-6 text-white">
+                  <div className="flex items-end justify-between gap-4">
+                    <div>
+                      <p className="text-[11px] uppercase tracking-widest text-white/80 mb-1">
+                        Стерильность по СанПиН • Гарантия 7 дней
+                      </p>
+                      <p className="text-base sm:text-lg font-medium">
+                        Онлайн-запись к Дарине, Наталье и Елизавете в MAX
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => {
+                        setBookingStep("form");
+                        setIsBookingOpen(true);
+                      }}
+                      className="bg-milk text-graphite hover:bg-white text-xs font-semibold px-4 py-2.5 rounded-full shrink-0 transition shadow-sm"
+                    >
+                      Записаться
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* ГОРЯЩИЕ ОКОШКИ */}
+            {data.blocks.showHotSlots && data.hotSlots.length > 0 && (
+              <section className="bg-sand/70 border border-borderWarm rounded-2xl p-4 sm:p-5 space-y-3.5">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-terracotta animate-pulse" />
+                    <h2 className="text-sm font-semibold tracking-tight uppercase text-graphite">
+                      Ближайшие свободные окошки
+                    </h2>
+                  </div>
+                  <span className="text-[11px] text-muted">Кликните для быстрой записи</span>
+                </div>
+
+                <div className="flex gap-2.5 overflow-x-auto no-scrollbar pb-1">
+                  {data.hotSlots.map((slot) => {
+                    const isSelected = selectedSlot && selectedSlot.id === slot.id;
+                    return (
+                      <button
+                        key={slot.id}
+                        onClick={() => handleSlotQuickPick(slot)}
+                        className={`shrink-0 text-left px-3.5 py-2.5 rounded-xl border transition active:scale-95 ${
+                          isSelected
+                            ? "bg-graphite text-milk border-graphite"
+                            : "bg-white hover:border-graphite/40 text-graphite border-borderWarm"
+                        }`}
+                      >
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-xs font-medium opacity-75">{slot.day}</span>
+                          <span className="text-sm font-bold">{slot.time}</span>
+                        </div>
+                        <div className="text-[11px] opacity-75 mt-0.5">{slot.label}</div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </section>
+            )}
+
+            {/* ПРАЙС-КОНСТРУКТОР */}
+            <section id="services" className="space-y-4">
+              <div className="flex items-end justify-between">
+                <div>
+                  <h2 className="text-2xl font-semibold tracking-tight">Услуги и цены</h2>
+                  <p className="text-xs text-muted mt-0.5">
+                    Выберите категорию мастера и отметьте нужные процедуры «+»
+                  </p>
+                </div>
+                {selectedIds.length > 0 && (
+                  <button
+                    onClick={() => setSelectedIds([])}
+                    className="text-xs text-terracotta underline"
+                  >
+                    Сбросить ({selectedIds.length})
+                  </button>
+                )}
+              </div>
+
+              {/* Табы мастеров */}
+              <div className="flex gap-2 p-1 bg-sand/80 border border-borderWarm rounded-2xl overflow-x-auto no-scrollbar">
+                {data.categories.map((cat) => {
+                  const active = activeCategory === cat.id;
+                  const countInCat = data.services.filter(
+                    (s) => s.category === cat.id && selectedIds.includes(s.id)
+                  ).length;
+                  return (
+                    <button
+                      key={cat.id}
+                      onClick={() => {
+                        setActiveCategory(cat.id);
+                        setBookingMasterId(cat.masterId);
+                      }}
+                      className={`shrink-0 flex-1 py-3 px-4 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center justify-center gap-2 ${
+                        active
+                          ? "bg-white text-graphite shadow-sm"
+                          : "text-muted hover:text-graphite"
+                      }`}
+                    >
+                      <span>{cat.name}</span>
+                      {countInCat > 0 && (
+                        <span className="w-5 h-5 rounded-full bg-sage text-white text-[10px] flex items-center justify-center">
+                          {countInCat}
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Инфо о текущем мастере */}
+              <div className="bg-sand/40 border border-borderWarm/80 rounded-xl px-3.5 py-2 flex items-center justify-between text-xs text-muted">
+                <span>
+                  Запись к: <strong className="text-graphite">{data.masters[bookingMasterId]?.name}</strong> ({data.masters[bookingMasterId]?.specialty})
+                </span>
+                <a
+                  href={`tel:${data.masters[bookingMasterId]?.phoneRaw}`}
+                  className="font-semibold text-graphite underline"
+                >
+                  {data.masters[bookingMasterId]?.phoneDisplay}
+                </a>
+              </div>
+
+              {/* Список услуг */}
+              <div className="space-y-2.5">
+                {data.services
+                  .filter((s) => s.category === activeCategory)
+                  .map((service) => {
+                    const isChecked = selectedIds.includes(service.id);
+                    return (
+                      <div
+                        key={service.id}
+                        onClick={() => toggleService(service.id)}
+                        className={`group cursor-pointer rounded-2xl p-4 border transition select-none flex items-start justify-between gap-3.5 ${
+                          isChecked
+                            ? "bg-white border-sage ring-1 ring-sage/30 shadow-sm"
+                            : "bg-white/80 hover:bg-white border-borderWarm"
+                        }`}
+                      >
+                        <div className="space-y-1 flex-1">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <h3 className="text-sm sm:text-base font-semibold text-graphite leading-snug">
+                              {service.title}
+                            </h3>
+                            {service.popular && (
+                              <span className="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded bg-sand text-sage">
+                                Хит
+                              </span>
+                            )}
+                          </div>
+                          {service.desc && (
+                            <p className="text-xs text-muted leading-relaxed">{service.desc}</p>
+                          )}
+                          <div className="flex items-center gap-3 pt-1 text-xs text-muted">
+                            <span className="font-semibold text-sm text-graphite">
+                              {service.price === 0 ? "Бесплатно" : `${Number(service.price).toLocaleString("ru-RU")} ₽`}
+                            </span>
+                            <span>•</span>
+                            <span className="inline-flex items-center gap-1">
+                              <Icon name="clock" className="w-3.5 h-3.5" />~{service.duration} мин
+                            </span>
+                          </div>
+                        </div>
+
+                        <button
+                          type="button"
+                          aria-label="Выбрать услугу"
+                          className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 transition mt-0.5 ${
+                            isChecked
+                              ? "bg-sage text-white"
+                              : "bg-sand text-graphite group-hover:bg-borderWarm"
+                          }`}
+                        >
+                          <Icon name={isChecked ? "check" : "plus"} className="w-4 h-4" />
+                        </button>
+                      </div>
+                    );
+                  })}
+              </div>
+            </section>
+
+            {/* ПРЕИМУЩЕСТВА */}
+            <section className="space-y-4">
+              <h2 className="text-2xl font-semibold tracking-tight">Сервис и стандарты</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div className="bg-sand/60 border border-borderWarm rounded-2xl p-4 space-y-1.5">
+                  <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-sage">
+                    <Icon name="shield" className="w-4 h-4" />
+                  </div>
+                  <h3 className="text-sm font-semibold">Стерильность 100%</h3>
+                  <p className="text-xs text-muted leading-relaxed">
+                    Крафт-пакет со стерильным инструментом вскрывается строго в присутствии клиента.
+                  </p>
+                </div>
+
+                <div className="bg-sand/60 border border-borderWarm rounded-2xl p-4 space-y-1.5">
+                  <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-terracotta">
+                    <Icon name="sparkles" className="w-4 h-4" />
+                  </div>
+                  <h3 className="text-sm font-semibold">Комфорт без потока</h3>
+                  <p className="text-xs text-muted leading-relaxed">
+                    Анатомическая кушетка для ресниц, мягкие кресла, натуральный кофе и чай.
+                  </p>
+                </div>
+
+                <div className="bg-sand/60 border border-borderWarm rounded-2xl p-4 space-y-1.5">
+                  <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-graphite">
+                    <Icon name="check" className="w-4 h-4" />
+                  </div>
+                  <h3 className="text-sm font-semibold">Гарантия 7 дней</h3>
+                  <p className="text-xs text-muted leading-relaxed">
+                    Качественные материалы премиум-класса и официальная гарантия на покрытие ногтей.
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            {/* ГАЛЕРЕЯ */}
+            {data.blocks.showGallery && data.gallery.length > 0 && (
+              <section className="space-y-4">
+                <div className="flex items-end justify-between">
+                  <div>
+                    <h2 className="text-2xl font-semibold tracking-tight">Работы мастеров</h2>
+                    <p className="text-xs text-muted mt-0.5">Дарина, Наталья и Елизавета</p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  {data.gallery.map((item) => (
+                    <div
+                      key={item.id}
+                      className="relative rounded-2xl overflow-hidden border border-borderWarm aspect-square bg-sand group"
+                    >
+                      <img
+                        src={item.url}
+                        alt={item.tag}
+                        loading="lazy"
+                        onError={(e) => {
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.src = window.__NS_FALLBACK_IMG__;
+                        }}
+                        className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                      />
+                      <div className="absolute bottom-2 left-2 right-2 bg-black/60 text-white text-[11px] px-2.5 py-1 rounded-lg truncate">
+                        {item.tag}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* ОТЗЫВЫ */}
+            {data.blocks.showReviews && (
+              <section className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h2 className="text-2xl font-semibold tracking-tight">Отзывы гостей</h2>
+                    <p className="text-xs text-muted mt-0.5">{data.settings.reviewsCount}</p>
+                  </div>
+                  <div className="flex items-center gap-1.5 bg-white border border-borderWarm px-3 py-1.5 rounded-full">
+                    <Icon name="star" className="w-4 h-4 text-terracotta" />
+                    <span className="text-sm font-bold">{data.settings.rating}</span>
+                    <span className="text-xs text-muted">/ 5.0</span>
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  {data.reviews.map((rev) => (
+                    <div
+                      key={rev.id}
+                      className="bg-white border border-borderWarm rounded-2xl p-4 space-y-2"
+                    >
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="font-semibold text-graphite">{rev.author}</span>
+                        <span className="text-muted">{rev.date}</span>
+                      </div>
+                      <p className="text-xs sm:text-sm text-graphite/85 leading-relaxed">
+                        «{rev.text}»
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* КОНТАКТЫ МАСТЕРОВ И КАРТА */}
+            <section id="location" className="bg-white border border-borderWarm rounded-2xl p-5 space-y-4">
+              <div className="space-y-1">
+                <span className="text-[11px] uppercase tracking-widest text-sage font-semibold">
+                  Контакты мастеров
+                </span>
+                <h2 className="text-xl font-semibold">Ждём вас в студии NS</h2>
+              </div>
+
+              {/* Прямые контакты всех трех мастеров */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+                <div className="bg-sand/60 border border-borderWarm rounded-xl p-3.5 space-y-1.5">
+                  <div className="text-xs font-semibold text-graphite flex items-center justify-between">
+                    <span>💅 Дарина</span>
+                    <span className="text-[10px] text-muted">Маникюр</span>
+                  </div>
+                  <a href={`tel:${data.masters.darina.phoneRaw}`} className="text-sm font-bold block text-graphite">
+                    {data.masters.darina.phoneDisplay}
+                  </a>
+                  <p className="text-[11px] text-muted">MAX чат</p>
+                </div>
+
+                <div className="bg-sand/60 border border-borderWarm rounded-xl p-3.5 space-y-1.5">
+                  <div className="text-xs font-semibold text-graphite flex items-center justify-between">
+                    <span>👁️ Наталья</span>
+                    <span className="text-[10px] text-muted">Брови/Ресницы</span>
+                  </div>
+                  <a href={`tel:${data.masters.natalia.phoneRaw}`} className="text-sm font-bold block text-graphite">
+                    {data.masters.natalia.phoneDisplay}
+                  </a>
+                  <p className="text-[11px] text-muted">MAX чат</p>
+                </div>
+
+                <div className="bg-sand/60 border border-borderWarm rounded-xl p-3.5 space-y-1.5">
+                  <div className="text-xs font-semibold text-graphite flex items-center justify-between">
+                    <span>💄 Елизавета</span>
+                    <span className="text-[10px] text-muted">Визаж/Прически</span>
+                  </div>
+                  <a href={`tel:${data.masters.elizaveta.phoneRaw}`} className="text-sm font-bold block text-graphite">
+                    {data.masters.elizaveta.phoneDisplay}
+                  </a>
+                  <p className="text-[11px] text-muted">MAX чат</p>
+                </div>
+              </div>
+
+              <div className="space-y-2.5 text-sm pt-2">
+                <div className="flex items-start gap-2.5">
+                  <Icon name="pin" className="w-4 h-4 text-terracotta shrink-0 mt-1" />
+                  <div>
+                    <div className="font-medium">
+                      {data.settings.city}, {data.settings.address}
+                    </div>
+                    <div className="text-xs text-muted">{data.settings.district} • парковка рядом со студией</div>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2.5">
+                  <Icon name="clock" className="w-4 h-4 text-sage shrink-0" />
+                  <span>{data.settings.hoursText}</span>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2.5 pt-2">
+                <a
+                  href={data.settings.yandexMapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-sand hover:bg-borderWarm/80 text-graphite text-xs font-semibold py-3 px-3 rounded-xl text-center transition"
+                >
+                  Яндекс.Карты
+                </a>
+                <a
+                  href={data.settings.dgisUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-sand hover:bg-borderWarm/80 text-graphite text-xs font-semibold py-3 px-3 rounded-xl text-center transition"
+                >
+                  2ГИС
+                </a>
+              </div>
+            </section>
+          </main>
+
+          {/* ПОДВАЛ */}
+          <footer className="max-w-2xl mx-auto w-full px-4 pt-10 pb-6 text-xs text-muted flex items-center justify-between">
+            <div>
+              © {new Date().getFullYear()} {data.settings.salonName} • {data.settings.address}
+            </div>
+            <button
+              onClick={() => setIsPinModalOpen(true)}
+              className="opacity-15 hover:opacity-80 transition p-1.5 text-graphite"
+              aria-label="Панель управления"
+              title="Управление студией"
+            >
+              <Icon name="lock" className="w-3.5 h-3.5" />
+            </button>
+          </footer>
+
+          {/* НИЖНЯЯ ЗАКРЕПЛЕННАЯ ПЛАШКА */}
+          <div className="fixed bottom-0 inset-x-0 z-40 bg-milk/95 backdrop-blur-md border-t border-borderWarm px-4 py-3 shadow-lg">
+            <div className="max-w-2xl mx-auto flex items-center justify-between gap-3">
+              {selectedIds.length > 0 ? (
+                <div>
+                  <div className="text-xs text-muted">
+                    К мастеру <strong className="text-graphite">{currentMaster.name}</strong> • {selectedIds.length} усл.
+                  </div>
+                  <div className="text-base font-bold text-graphite">
+                    {totalPrice.toLocaleString("ru-RU")} ₽
+                  </div>
+                </div>
+              ) : (
+                <div>
+                  <div className="text-xs font-medium text-graphite flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-sage" />
+                    Запись к мастерам NS
+                  </div>
+                  <div className="text-[11px] text-muted">
+                    {selectedSlot ? `Окошко: ${selectedSlot.day}, ${selectedSlot.time}` : "Без звонков через мессенджер MAX"}
+                  </div>
+                </div>
+              )}
+
+              <button
+                onClick={() => {
+                  setBookingStep("form");
+                  setIsBookingOpen(true);
+                }}
+                className="bg-sage hover:bg-sageDark active:scale-95 text-white text-xs sm:text-sm font-semibold px-5 py-3.5 rounded-full transition flex items-center gap-2 shadow-sm shrink-0"
+              >
+                <span>Записаться в MAX</span>
+                <Icon name="send" className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+
+          {/* НИЖНЯЯ ШТОРКА ЗАПИСИ (BOTTOM SHEET) */}
+          {isBookingOpen && (
+            <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-end justify-center">
+              <div className="bg-milk w-full max-w-xl rounded-t-3xl border-t border-borderWarm p-5 sm:p-6 max-h-[90vh] overflow-y-auto animate-sheet space-y-5">
+                <div className="flex items-center justify-between border-b border-borderWarm pb-3">
+                  <div>
+                    <h3 className="text-lg font-semibold text-graphite">
+                      {bookingStep === "form" ? "Запись в студию NS" : "Заявка сформирована"}
+                    </h3>
+                    <p className="text-xs text-muted">
+                      Мастер: <strong className="text-graphite">{currentMaster.name}</strong> ({currentMaster.specialty})
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => setIsBookingOpen(false)}
+                    className="w-8 h-8 rounded-full bg-sand flex items-center justify-center text-graphite"
+                  >
+                    <Icon name="close" className="w-4 h-4" />
+                  </button>
+                </div>
+
+                {bookingStep === "form" ? (
+                  <form onSubmit={handleBookingSubmit} className="space-y-4">
+                    {/* Переключатель мастера внутри формы */}
+                    <div className="space-y-1.5">
+                      <label className="text-xs font-semibold text-graphite block">
+                        К какому мастеру оформляем запись:
+                      </label>
+                      <div className="grid grid-cols-3 gap-2">
+                        <button
+                          type="button"
+                          onClick={() => setBookingMasterId("darina")}
+                          className={`py-2 px-2 rounded-xl text-[11px] font-semibold border text-center transition ${
+                            effectiveMasterId === "darina"
+                              ? "bg-graphite text-milk border-graphite"
+                              : "bg-white text-graphite border-borderWarm"
+                          }`}
+                        >
+                          💅 Дарина
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setBookingMasterId("natalia")}
+                          className={`py-2 px-2 rounded-xl text-[11px] font-semibold border text-center transition ${
+                            effectiveMasterId === "natalia"
+                              ? "bg-graphite text-milk border-graphite"
+                              : "bg-white text-graphite border-borderWarm"
+                          }`}
+                        >
+                          👁️ Наталья
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setBookingMasterId("elizaveta")}
+                          className={`py-2 px-2 rounded-xl text-[11px] font-semibold border text-center transition ${
+                            effectiveMasterId === "elizaveta"
+                              ? "bg-graphite text-milk border-graphite"
+                              : "bg-white text-graphite border-borderWarm"
+                          }`}
+                        >
+                          💄 Елизавета
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Сводка услуг */}
+                    <div className="bg-sand/70 border border-borderWarm rounded-2xl p-3.5 space-y-2">
+                      <div className="flex items-center justify-between text-xs font-semibold">
+                        <span>Выбранные услуги ({selectedServices.length})</span>
+                        {selectedServices.length > 0 && (
+                          <span>{totalPrice.toLocaleString("ru-RU")} ₽</span>
+                        )}
+                      </div>
+                      {selectedServices.length > 0 ? (
+                        <ul className="text-xs text-muted space-y-1">
+                          {selectedServices.map((s) => (
+                            <li key={s.id} className="flex justify-between">
+                              <span>• {s.title}</span>
+                              <span>{s.price === 0 ? "Бесплатно" : `${s.price} ₽`}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <p className="text-xs text-muted">
+                          Услуги не выбраны — мастер поможет определиться прямо в чате.
+                        </p>
+                      )}
+                    </div>
+
+                    {/* Выбор окошка */}
+                    {data.hotSlots.length > 0 && (
+                      <div className="space-y-1.5">
+                        <label className="text-xs font-semibold text-graphite block">
+                          Свободное окошко (или укажите дату ниже):
+                        </label>
+                        <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1">
+                          {data.hotSlots.map((slot) => {
+                            const isSlotActive = selectedSlot && selectedSlot.id === slot.id;
+                            return (
+                              <button
+                                type="button"
+                                key={slot.id}
+                                onClick={() => {
+                                  setSelectedSlot(isSlotActive ? null : slot);
+                                  if (!isSlotActive) setBookingMasterId(slot.masterId);
+                                }}
+                                className={`shrink-0 px-3 py-1.5 rounded-xl text-xs border transition ${
+                                  isSlotActive
+                                    ? "bg-graphite text-milk border-graphite"
+                                    : "bg-white text-graphite border-borderWarm"
+                                }`}
+                              >
+                                {slot.day} <strong>{slot.time}</strong> ({data.masters[slot.masterId]?.name})
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div>
+                        <label className="text-xs font-medium text-muted block mb-1">
+                          Ваше имя *
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          placeholder="Анна"
+                          value={clientName}
+                          onChange={(e) => setClientName(e.target.value)}
+                          className="w-full bg-white border border-borderWarm rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:border-graphite"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-xs font-medium text-muted block mb-1">
+                          Телефон для связи *
+                        </label>
+                        <input
+                          type="tel"
+                          required
+                          placeholder="+7 (9__) ___-__-__"
+                          value={clientPhone}
+                          onChange={(e) => setClientPhone(e.target.value)}
+                          className="w-full bg-white border border-borderWarm rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:border-graphite"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div>
+                        <label className="text-xs font-medium text-muted block mb-1">
+                          Желаемое время
+                        </label>
+                        <input
+                          type="text"
+                          placeholder={selectedSlot ? `${selectedSlot.day}, ${selectedSlot.time}` : "Например: Завтра в 15:00"}
+                          value={customTime}
+                          onChange={(e) => setCustomTime(e.target.value)}
+                          className="w-full bg-white border border-borderWarm rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:border-graphite"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-xs font-medium text-muted block mb-1">
+                          Пожелания к записи
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="Длина, особенности..."
+                          value={clientComment}
+                          onChange={(e) => setClientComment(e.target.value)}
+                          className="w-full bg-white border border-borderWarm rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:border-graphite"
+                        />
+                      </div>
+                    </div>
+
+                    <button
+                      type="submit"
+                      className="w-full bg-sage hover:bg-sageDark text-white font-semibold text-sm py-3.5 rounded-xl transition shadow-sm flex items-center justify-center gap-2"
+                    >
+                      <span>Отправить заявку в MAX ({currentMaster.name})</span>
+                      <Icon name="send" className="w-4 h-4" />
+                    </button>
+                  </form>
+                ) : (
+                  /* ШАГ УСПЕХА */
+                  <div className="space-y-4 animate-fade">
+                    <div className="bg-emerald-900/10 border border-emerald-800/20 rounded-2xl p-4 text-xs space-y-1.5">
+                      <div className="font-semibold text-emerald-950 flex items-center gap-1.5 text-sm">
+                        <Icon name="check" className="w-4 h-4 text-emerald-700" />
+                        Текст записи скопирован в буфер!
+                      </div>
+                      <p className="text-graphite/85 leading-relaxed">
+                        Сейчас откроется чат мессенджера <strong>MAX</strong> с мастером <strong>{lastTargetMaster?.name}</strong> ({lastTargetMaster?.phoneDisplay}) — просто вставьте готовое сообщение в чат.
+                      </p>
+                    </div>
+
+                    <pre className="bg-white border border-borderWarm rounded-xl p-3 text-xs whitespace-pre-wrap font-sans text-graphite/90 leading-relaxed">
+                      {lastFormattedMsg}
+                    </pre>
+
+                    <div className="space-y-2.5">
+                      <button
+                        onClick={openMaxMessenger}
+                        className="w-full bg-graphite hover:bg-black text-milk font-semibold text-sm py-3.5 rounded-xl transition flex items-center justify-center gap-2 shadow-sm"
+                      >
+                        <span>Перейти в MAX к мастеру {lastTargetMaster?.name}</span>
+                        <Icon name="send" className="w-4 h-4" />
+                      </button>
+
+                      <div className="grid grid-cols-2 gap-2">
+                        <button
+                          onClick={() => {
+                            if (lastTargetMaster) {
+                              navigator.clipboard.writeText(lastTargetMaster.phoneRaw);
+                              showToast(`Номер ${lastTargetMaster.name} скопирован!`);
+                            }
+                          }}
+                          className="bg-sand hover:bg-borderWarm text-graphite text-xs font-semibold py-3 px-3 rounded-xl flex items-center justify-center gap-1.5"
+                        >
+                          <Icon name="copy" className="w-3.5 h-3.5" />
+                          <span>Скопировать номер</span>
+                        </button>
+
+                        <a
+                          href={`tel:${lastTargetMaster?.phoneRaw}`}
+                          className="bg-sand hover:bg-borderWarm text-graphite text-xs font-semibold py-3 px-3 rounded-xl flex items-center justify-center gap-1.5"
+                        >
+                          <Icon name="phone" className="w-3.5 h-3.5" />
+                          <span>Позвонить</span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* ПИН-МОДАЛКА (1234) */}
+          {isPinModalOpen && (
+            <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+              <div className="bg-milk border border-borderWarm rounded-2xl p-6 w-full max-w-xs space-y-4 animate-fade">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-sm font-semibold uppercase tracking-wider">Вход в управление</h3>
+                  <button onClick={() => setIsPinModalOpen(false)} className="text-muted">
+                    <Icon name="close" className="w-4 h-4" />
+                  </button>
+                </div>
+                <form onSubmit={handlePinSubmit} className="space-y-3">
+                  <input
+                    type="password"
+                    inputMode="numeric"
+                    maxLength={4}
+                    autoFocus
+                    placeholder="ПИН-код"
+                    value={pinInput}
+                    onChange={(e) => setPinInput(e.target.value)}
+                    className="w-full text-center tracking-[0.5em] text-xl font-bold bg-white border border-borderWarm rounded-xl py-3 focus:outline-none focus:border-graphite"
+                  />
+                  {pinError && (
+                    <p className="text-xs text-red-600 text-center">Неверный ПИН-код</p>
+                  )}
+                  <button
+                    type="submit"
+                    className="w-full bg-graphite text-milk text-xs font-semibold py-3 rounded-xl"
+                  >
+                    Войти
+                  </button>
+                </form>
+              </div>
+            </div>
+          )}
+
+          {/* АДМИН-ПАНЕЛЬ */}
+          {isAdminOpen && (
+            <div className="fixed inset-0 z-50 bg-milk overflow-y-auto">
+              <div className="max-w-3xl mx-auto p-4 sm:p-6 space-y-6 pb-24">
+                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-borderWarm pb-4">
+                  <div>
+                    <span className="text-[11px] uppercase tracking-widest text-sage font-bold">
+                      Админ-панель NS
+                    </span>
+                    <h2 className="text-xl font-bold">Управление мастерами и прайсом</h2>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={exportUpdatedHtmlFile}
+                      className="bg-sage hover:bg-sageDark text-white text-xs font-semibold px-3.5 py-2.5 rounded-xl flex items-center gap-1.5 shadow-sm"
+                      title="Скачать готовый index.html со всеми правками"
+                    >
+                      <Icon name="download" className="w-4 h-4" />
+                      <span>Скачать index.html</span>
+                    </button>
+                    <button
+                      onClick={() => setIsAdminOpen(false)}
+                      className="bg-graphite text-milk text-xs font-semibold px-4 py-2.5 rounded-xl"
+                    >
+                      На сайт
+                    </button>
+                  </div>
+                </div>
+
+                {/* Навигация админки */}
+                <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1">
+                  {[
+                    { id: "slots", label: `Окошки (${data.hotSlots.length})` },
+                    { id: "prices", label: `Прайс (${data.services.length})` },
+                    { id: "masters", label: "Мастера и MAX" },
+                    { id: "blocks", label: "Блоки и Фото" },
+                    { id: "orders", label: `Заявки (${orders.length})` }
+                  ].map((tab) => (
+                    <button
+                      key={tab.id}
+                      onClick={() => setAdminTab(tab.id)}
+                      className={`shrink-0 px-4 py-2 rounded-xl text-xs font-semibold transition ${
+                        adminTab === tab.id
+                          ? "bg-graphite text-milk"
+                          : "bg-sand text-graphite hover:bg-borderWarm"
+                      }`}
+                    >
+                      {tab.label}
+                    </button>
+                  ))}
+                </div>
+
+                {/* ВКЛАДКА 1: ОКОШКИ (ИСПРАВЛЕН БАГ НАЗВАНИЙ) */}
+                {adminTab === "slots" && (
+                  <div className="space-y-5">
+                    <div className="bg-white border border-borderWarm rounded-2xl p-4 space-y-3">
+                      <h3 className="text-sm font-semibold">Добавить свободное окошко</h3>
+                      <div className="grid grid-cols-1 sm:grid-cols-5 gap-2.5">
+                        <select
+                          value={newSlotMaster}
+                          onChange={(e) => setNewSlotMaster(e.target.value)}
+                          className="bg-milk border border-borderWarm rounded-xl px-3 py-2 text-xs"
+                        >
+                          <option value="darina">Дарина (Маникюр)</option>
+                          <option value="natalia">Наталья (Ресницы/Брови)</option>
+                          <option value="elizaveta">Елизавета (Визаж/Прически)</option>
+                        </select>
+                        <input
+                          type="text"
+                          placeholder="День (Сегодня / Завтра)"
+                          value={newSlotDay}
+                          onChange={(e) => setNewSlotDay(e.target.value)}
+                          className="bg-milk border border-borderWarm rounded-xl px-3 py-2 text-xs"
+                        />
+                        <input
+                          type="text"
+                          placeholder="Время (14:30)"
+                          value={newSlotTime}
+                          onChange={(e) => setNewSlotTime(e.target.value)}
+                          className="bg-milk border border-borderWarm rounded-xl px-3 py-2 text-xs"
+                        />
+                        <input
+                          type="text"
+                          placeholder="Услуга (необязательно)"
+                          value={newSlotLabel}
+                          onChange={(e) => setNewSlotLabel(e.target.value)}
+                          className="bg-milk border border-borderWarm rounded-xl px-3 py-2 text-xs"
+                        />
+                        <button
+                          onClick={() => {
+                            if (!newSlotTime.trim()) return;
+                            const mName = data.masters[newSlotMaster]?.name || "Мастер";
+                            const defaultSpec =
+                              newSlotMaster === "darina"
+                                ? "Маникюр"
+                                : newSlotMaster === "natalia"
+                                ? "Ресницы / Брови"
+                                : "Макияж / Прически";
+                            const baseLabel = newSlotLabel.trim() || defaultSpec;
+                            const finalLabel = baseLabel.toLowerCase().includes(mName.toLowerCase())
+                              ? baseLabel
+                              : `${baseLabel} (${mName})`;
+
+                            setData((prev) => ({
+                              ...prev,
+                              hotSlots: [
+                                ...prev.hotSlots,
+                                {
+                                  id: "slot_" + Date.now(),
+                                  masterId: newSlotMaster,
+                                  day: newSlotDay || "Сегодня",
+                                  time: newSlotTime,
+                                  label: finalLabel
+                                }
+                              ]
+                            }));
+                            setNewSlotLabel("");
+                            showToast("Окошко добавлено!");
+                          }}
+                          className="bg-sage text-white text-xs font-semibold rounded-xl py-2 px-3"
+                        >
+                          + Добавить
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      {data.hotSlots.map((slot) => (
+                        <div
+                          key={slot.id}
+                          className="bg-white border border-borderWarm rounded-xl p-3 flex items-center justify-between gap-2"
+                        >
+                          <div className="text-xs">
+                            <span className="font-bold">{slot.day}, {slot.time}</span> —{" "}
+                            <span className="text-muted">{slot.label}</span>
+                          </div>
+                          <button
+                            onClick={() =>
+                              setData((prev) => ({
+                                ...prev,
+                                hotSlots: prev.hotSlots.filter((s) => s.id !== slot.id)
+                              }))
+                            }
+                            className="text-red-600 hover:bg-red-50 p-1.5 rounded-lg shrink-0"
+                          >
+                            <Icon name="trash" className="w-4 h-4" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* ВКЛАДКА 2: ПРАЙС */}
+                {adminTab === "prices" && (
+                  <div className="space-y-6">
+                    <div className="bg-white border border-borderWarm rounded-2xl p-4 space-y-3">
+                      <h3 className="text-sm font-semibold">Добавить услугу</h3>
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                        <select
+                          value={newService.category}
+                          onChange={(e) => {
+                            const cat = e.target.value;
+                            setNewService({
+                              ...newService,
+                              category: cat,
+                              masterId: cat === "nails" ? "darina" : cat === "brows_lashes" ? "natalia" : "elizaveta"
+                            });
+                          }}
+                          className="bg-milk border border-borderWarm rounded-xl px-3 py-2 text-xs"
+                        >
+                          {data.categories.map((c) => (
+                            <option key={c.id} value={c.id}>{c.name}</option>
+                          ))}
+                        </select>
+                        <input
+                          type="text"
+                          placeholder="Название услуги"
+                          value={newService.title}
+                          onChange={(e) => setNewService({ ...newService, title: e.target.value })}
+                          className="bg-milk border border-borderWarm rounded-xl px-3 py-2 text-xs sm:col-span-2"
+                        />
+                        <input
+                          type="number"
+                          placeholder="Цена (₽)"
+                          value={newService.price}
+                          onChange={(e) => setNewService({ ...newService, price: Number(e.target.value) })}
+                          className="bg-milk border border-borderWarm rounded-xl px-3 py-2 text-xs"
+                        />
+                        <input
+                          type="number"
+                          placeholder="Время (мин)"
+                          value={newService.duration}
+                          onChange={(e) => setNewService({ ...newService, duration: Number(e.target.value) })}
+                          className="bg-milk border border-borderWarm rounded-xl px-3 py-2 text-xs"
+                        />
+                        <button
+                          onClick={() => {
+                            if (!newService.title.trim()) return;
+                            setData((prev) => ({
+                              ...prev,
+                              services: [
+                                ...prev.services,
+                                { ...newService, id: "srv_" + Date.now() }
+                              ]
+                            }));
+                            setNewService({ ...newService, title: "", desc: "" });
+                            showToast("Услуга добавлена!");
+                          }}
+                          className="bg-sage text-white text-xs font-semibold rounded-xl py-2 px-3"
+                        >
+                          + Добавить
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="space-y-3">
+                      {data.services.map((srv) => (
+                        <div
+                          key={srv.id}
+                          className="bg-white border border-borderWarm rounded-xl p-3.5 space-y-2"
+                        >
+                          <div className="flex items-center justify-between gap-2">
+                            <span className="text-[10px] font-bold uppercase tracking-wider text-sage px-2 py-0.5 bg-sand rounded">
+                              {data.masters[srv.masterId]?.name}
+                            </span>
+                            <input
+                              type="text"
+                              value={srv.title}
+                              onChange={(e) => {
+                                const val = e.target.value;
+                                setData((prev) => ({
+                                  ...prev,
+                                  services: prev.services.map((item) =>
+                                    item.id === srv.id ? { ...item, title: val } : item
+                                  )
+                                }));
+                              }}
+                              className="font-semibold text-xs sm:text-sm bg-milk border border-borderWarm rounded-lg px-2.5 py-1.5 flex-1"
+                            />
+                            <button
+                              onClick={() =>
+                                setData((prev) => ({
+                                  ...prev,
+                                  services: prev.services.filter((item) => item.id !== srv.id)
+                                }))
+                              }
+                              className="text-red-600 p-1.5"
+                            >
+                              <Icon name="trash" className="w-4 h-4" />
+                            </button>
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-2">
+                            <div>
+                              <label className="text-[10px] text-muted block">Цена (₽)</label>
+                              <input
+                                type="number"
+                                value={srv.price}
+                                onChange={(e) => {
+                                  const val = Number(e.target.value);
+                                  setData((prev) => ({
+                                    ...prev,
+                                    services: prev.services.map((item) =>
+                                      item.id === srv.id ? { ...item, price: val } : item
+                                    )
+                                  }));
+                                }}
+                                className="w-full bg-milk border border-borderWarm rounded-lg px-2.5 py-1 text-xs font-bold"
+                              />
+                            </div>
+                            <div>
+                              <label className="text-[10px] text-muted block">Время (мин)</label>
+                              <input
+                                type="number"
+                                value={srv.duration}
+                                onChange={(e) => {
+                                  const val = Number(e.target.value);
+                                  setData((prev) => ({
+                                    ...prev,
+                                    services: prev.services.map((item) =>
+                                      item.id === srv.id ? { ...item, duration: val } : item
+                                    )
+                                  }));
+                                }}
+                                className="w-full bg-milk border border-borderWarm rounded-lg px-2.5 py-1 text-xs"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* ВКЛАДКА 3: МАСТЕРА И MAX */}
+                {adminTab === "masters" && (
+                  <div className="space-y-5">
+                    {/* Дарина */}
+                    <div className="bg-white border border-borderWarm rounded-2xl p-5 space-y-3">
+                      <div className="flex items-center gap-2">
+                        <span className="text-base">💅</span>
+                        <h3 className="text-sm font-bold">Мастер Дарина (Маникюр)</h3>
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                          <label className="text-xs font-medium text-muted block mb-1">Отображаемый телефон:</label>
+                          <input
+                            type="text"
+                            value={data.masters.darina.phoneDisplay}
+                            onChange={(e) => {
+                              const val = e.target.value;
+                              setData((prev) => ({
+                                ...prev,
+                                masters: {
+                                  ...prev.masters,
+                                  darina: { ...prev.masters.darina, phoneDisplay: val }
+                                }
+                              }));
+                            }}
+                            className="w-full bg-milk border border-borderWarm rounded-xl px-3 py-2 text-xs"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-xs font-medium text-muted block mb-1">Номер для звонков (без пробелов):</label>
+                          <input
+                            type="text"
+                            value={data.masters.darina.phoneRaw}
+                            onChange={(e) => {
+                              const val = e.target.value;
+                              setData((prev) => ({
+                                ...prev,
+                                masters: {
+                                  ...prev.masters,
+                                  darina: { ...prev.masters.darina, phoneRaw: val }
+                                }
+                              }));
+                            }}
+                            className="w-full bg-milk border border-borderWarm rounded-xl px-3 py-2 text-xs"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="text-xs font-medium text-muted block mb-1">Ссылка MAX:</label>
+                        <input
+                          type="url"
+                          value={data.masters.darina.maxInviteLink}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            setData((prev) => ({
+                              ...prev,
+                              masters: {
+                                ...prev.masters,
+                                darina: { ...prev.masters.darina, maxInviteLink: val }
+                              }
+                            }));
+                          }}
+                          className="w-full bg-milk border border-borderWarm rounded-xl px-3 py-2 text-xs"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Наталья */}
+                    <div className="bg-white border border-borderWarm rounded-2xl p-5 space-y-3">
+                      <div className="flex items-center gap-2">
+                        <span className="text-base">👁️</span>
+                        <h3 className="text-sm font-bold">Мастер Наталья (Ресницы и Брови)</h3>
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                          <label className="text-xs font-medium text-muted block mb-1">Отображаемый телефон:</label>
+                          <input
+                            type="text"
+                            value={data.masters.natalia.phoneDisplay}
+                            onChange={(e) => {
+                              const val = e.target.value;
+                              setData((prev) => ({
+                                ...prev,
+                                masters: {
+                                  ...prev.masters,
+                                  natalia: { ...prev.masters.natalia, phoneDisplay: val }
+                                }
+                              }));
+                            }}
+                            className="w-full bg-milk border border-borderWarm rounded-xl px-3 py-2 text-xs"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-xs font-medium text-muted block mb-1">Номер для звонков (без пробелов):</label>
+                          <input
+                            type="text"
+                            value={data.masters.natalia.phoneRaw}
+                            onChange={(e) => {
+                              const val = e.target.value;
+                              setData((prev) => ({
+                                ...prev,
+                                masters: {
+                                  ...prev.masters,
+                                  natalia: { ...prev.masters.natalia, phoneRaw: val }
+                                }
+                              }));
+                            }}
+                            className="w-full bg-milk border border-borderWarm rounded-xl px-3 py-2 text-xs"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="text-xs font-medium text-muted block mb-1">Ссылка MAX:</label>
+                        <input
+                          type="url"
+                          value={data.masters.natalia.maxInviteLink}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            setData((prev) => ({
+                              ...prev,
+                              masters: {
+                                ...prev.masters,
+                                natalia: { ...prev.masters.natalia, maxInviteLink: val }
+                              }
+                            }));
+                          }}
+                          className="w-full bg-milk border border-borderWarm rounded-xl px-3 py-2 text-xs"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Елизавета */}
+                    <div className="bg-white border border-borderWarm rounded-2xl p-5 space-y-3">
+                      <div className="flex items-center gap-2">
+                        <span className="text-base">💄</span>
+                        <h3 className="text-sm font-bold">Мастер Елизавета (Визажист и стилист)</h3>
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                          <label className="text-xs font-medium text-muted block mb-1">Отображаемый телефон:</label>
+                          <input
+                            type="text"
+                            value={data.masters.elizaveta.phoneDisplay}
+                            onChange={(e) => {
+                              const val = e.target.value;
+                              setData((prev) => ({
+                                ...prev,
+                                masters: {
+                                  ...prev.masters,
+                                  elizaveta: { ...prev.masters.elizaveta, phoneDisplay: val }
+                                }
+                              }));
+                            }}
+                            className="w-full bg-milk border border-borderWarm rounded-xl px-3 py-2 text-xs"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-xs font-medium text-muted block mb-1">Номер для звонков (без пробелов):</label>
+                          <input
+                            type="text"
+                            value={data.masters.elizaveta.phoneRaw}
+                            onChange={(e) => {
+                              const val = e.target.value;
+                              setData((prev) => ({
+                                ...prev,
+                                masters: {
+                                  ...prev.masters,
+                                  elizaveta: { ...prev.masters.elizaveta, phoneRaw: val }
+                                }
+                              }));
+                            }}
+                            className="w-full bg-milk border border-borderWarm rounded-xl px-3 py-2 text-xs"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="text-xs font-medium text-muted block mb-1">Ссылка MAX:</label>
+                        <input
+                          type="url"
+                          value={data.masters.elizaveta.maxInviteLink}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            setData((prev) => ({
+                              ...prev,
+                              masters: {
+                                ...prev.masters,
+                                elizaveta: { ...prev.masters.elizaveta, maxInviteLink: val }
+                              }
+                            }));
+                          }}
+                          className="w-full bg-milk border border-borderWarm rounded-xl px-3 py-2 text-xs"
+                        />
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={() => {
+                        if (confirm("Сбросить все настройки к начальным?")) {
+                          localStorage.removeItem(STORAGE_KEY);
+                          setData(window.__NS_DEFAULT_DATA__);
+                          showToast("Сброшено к начальным данным");
+                        }
+                      }}
+                      className="text-xs text-red-600 underline"
+                    >
+                      Сбросить к заводским настройкам
+                    </button>
+                  </div>
+                )}
+
+                {/* ВКЛАДКА 4: БЛОКИ И ФОТОГРАФИИ РАБОТ (ЗАГРУЗКА С ТЕЛЕФОНА/ПК) */}
+                {adminTab === "blocks" && (
+                  <div className="space-y-5">
+                    <div className="bg-white border border-borderWarm rounded-2xl p-5 space-y-4">
+                      <h3 className="text-sm font-semibold">Отображение секций</h3>
+                      {[
+                        { key: "showPromoBanner", label: "Акционный верхний баннер" },
+                        { key: "showHotSlots", label: "Виджет свободных окошек" },
+                        { key: "showGallery", label: "Фотогалерея работ мастеров" },
+                        { key: "showReviews", label: "Отзывы клиентов" }
+                      ].map((item) => (
+                        <label
+                          key={item.key}
+                          className="flex items-center justify-between py-2 border-b border-borderWarm last:border-none cursor-pointer"
+                        >
+                          <span className="text-xs sm:text-sm font-medium">{item.label}</span>
+                          <input
+                            type="checkbox"
+                            checked={data.blocks[item.key]}
+                            onChange={(e) =>
+                              setData((prev) => ({
+                                ...prev,
+                                blocks: { ...prev.blocks, [item.key]: e.target.checked }
+                              }))
+                            }
+                            className="w-4 h-4 accent-sage"
+                          />
+                        </label>
+                      ))}
+                    </div>
+
+                    {/* ДОБАВЛЕНИЕ НОВОГО ФОТО РАБОТЫ С ТЕЛЕФОНА / КОМПЬЮТЕРА */}
+                    <div className="bg-white border border-borderWarm rounded-2xl p-5 space-y-3">
+                      <h3 className="text-sm font-semibold">Добавить новое фото работы</h3>
+                      <p className="text-xs text-muted">
+                        Выберите фото из галереи телефона или компьютера — оно автоматически сожмется и появится на сайте.
+                      </p>
+                      <div className="flex flex-col sm:flex-row gap-2.5">
+                        <input
+                          type="text"
+                          placeholder="Подпись (напр. Маникюр от Дарины)"
+                          value={newGalleryTag}
+                          onChange={(e) => setNewGalleryTag(e.target.value)}
+                          className="bg-milk border border-borderWarm rounded-xl px-3 py-2.5 text-xs flex-1"
+                        />
+                        <label className="bg-sage hover:bg-sageDark text-white text-xs font-semibold px-4 py-2.5 rounded-xl cursor-pointer flex items-center justify-center gap-2 shrink-0 transition">
+                          <Icon name="upload" className="w-4 h-4" />
+                          <span>Выбрать фото с устройства</span>
+                          <input
+                            type="file"
+                            accept="image/*"
+                            className="hidden"
+                            onChange={(e) => {
+                              const file = e.target.files?.[0];
+                              if (file) {
+                                handleAddNewGalleryPhoto(file);
+                                e.target.value = "";
+                              }
+                            }}
+                          />
+                        </label>
+                      </div>
+                    </div>
+
+                    {/* УПРАВЛЕНИЕ ТЕКУЩИМИ ФОТОГРАФИЯМИ В ГАЛЕРЕЕ */}
+                    <div className="bg-white border border-borderWarm rounded-2xl p-5 space-y-4">
+                      <h3 className="text-sm font-semibold">Текущие карточки в галерее ({data.gallery.length})</h3>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        {data.gallery.map((img) => (
+                          <div key={img.id} className="border border-borderWarm rounded-xl p-3 bg-milk/60 flex items-center gap-3">
+                            <img
+                              src={img.url}
+                              alt={img.tag}
+                              className="w-16 h-16 rounded-lg object-cover border border-borderWarm shrink-0 bg-sand"
+                            />
+                            <div className="flex-1 min-w-0 space-y-2">
+                              <input
+                                type="text"
+                                value={img.tag}
+                                placeholder="Подпись к фото"
+                                onChange={(e) => {
+                                  const val = e.target.value;
+                                  setData((prev) => ({
+                                    ...prev,
+                                    gallery: prev.gallery.map((g) =>
+                                      g.id === img.id ? { ...g, tag: val } : g
+                                    )
+                                  }));
+                                }}
+                                className="w-full bg-white border border-borderWarm rounded-lg px-2.5 py-1.5 text-xs font-medium"
+                              />
+                              <div className="flex items-center gap-2">
+                                <label className="bg-sand hover:bg-borderWarm text-graphite text-[11px] font-semibold px-2.5 py-1.5 rounded-lg cursor-pointer flex items-center gap-1 transition">
+                                  <Icon name="upload" className="w-3.5 h-3.5" />
+                                  <span>Заменить фото</span>
+                                  <input
+                                    type="file"
+                                    accept="image/*"
+                                    className="hidden"
+                                    onChange={(e) => {
+                                      const file = e.target.files?.[0];
+                                      if (file) {
+                                        handleReplaceGalleryPhoto(img.id, file);
+                                        e.target.value = "";
+                                      }
+                                    }}
+                                  />
+                                </label>
+                                <button
+                                  onClick={() =>
+                                    setData((prev) => ({
+                                      ...prev,
+                                      gallery: prev.gallery.filter((g) => g.id !== img.id)
+                                    }))
+                                  }
+                                  className="text-red-600 hover:bg-red-50 p-1.5 rounded-lg ml-auto"
+                                  title="Удалить карточку"
+                                >
+                                  <Icon name="trash" className="w-4 h-4" />
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* ВКЛАДКА 5: ЖУРНАЛ ЗАЯВОК */}
+                {adminTab === "orders" && (
+                  <div className="space-y-3">
+                    {orders.length === 0 ? (
+                      <div className="bg-white border border-borderWarm rounded-2xl p-6 text-center text-xs text-muted">
+                        На этом устройстве заявок пока нет.
+                      </div>
+                    ) : (
+                      orders.map((ord) => (
+                        <div
+                          key={ord.id}
+                          className="bg-white border border-borderWarm rounded-2xl p-4 space-y-2 text-xs"
+                        >
+                          <div className="flex items-center justify-between">
+                            <span className="font-bold text-sm">
+                              {ord.clientName} ({ord.clientPhone}) → к мастеру {ord.masterName}
+                            </span>
+                            <span className="text-muted">{ord.createdAt}</span>
+                          </div>
+                          <div><strong>Время:</strong> {ord.timeChoice}</div>
+                          <div>
+                            <strong>Услуги:</strong>{" "}
+                            {ord.services.length > 0 ? ord.services.join(", ") : "Консультация"}
+                          </div>
+                          {ord.comment && <div><strong>Пожелания:</strong> {ord.comment}</div>}
+                        </div>
+                      ))
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<App />);
+  </script>
+</body>
+</html>
